@@ -1,10 +1,16 @@
 import React, { Component } from 'react'
+import ImageItem from './ImageItem.js';
 
 export default class ImageList extends Component {
     render() {
         return (
             <div>
-                <img src={this.props.creature.url} alt={this.props.creature.description}/>
+                {
+                    this.props.images.map(creature => {
+                        return <ImageItem creature={creature} />
+                    })
+                }
+               
 
             </div>
         )
