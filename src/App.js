@@ -1,18 +1,35 @@
 import React, { Component } from 'react';
 import images from './data.js';
 import ImageList from './ImageList.js';
+import Options from './Options.js';
 import './App.css';
 
 
 
 export default class App extends Component {
-  state = { selected: null, filteredImages: images };
+  state = { selected: null, filteredImages: images, filter: null };
 
   findOptions = () => {
-    const imageOptions = images.map(object => {
-      return object.horns;
-    })
-    return imageOptions;
+    // garb all keys from an object
+    const objectKeys = Object.keys(images[0]);
+    
+    console.log(objectKeys);
+
+    let optionsUnique = objectKeys.filter(function(item, index){
+      return objectKeys.indexOf(item) >= index;
+    });
+   
+    return optionsUnique;
+  }
+
+  filterBy = (e) => {
+    const selected = e.target.value;
+    if(!selected) {
+      this.setState({filter: null})
+    } else {
+      this.setState({filter: selected});
+    }
+
   }
 
   filterOptionsWord = (e) => {
@@ -22,7 +39,7 @@ export default class App extends Component {
     }) });
 
   }
-  filterOptions = (e) => {
+  filterOptionsHorn = (e) => {
     // apparently need to change it to a number becuase if it is a string it will break
     this.setState({ selected: Number(e.target.value) });
     this.setState({ filteredImages: images.filter(image => {
@@ -37,22 +54,33 @@ export default class App extends Component {
   render() {
     return (
       <div className="App">
-        <p>Can only use one filter at a time</p>
-        <p>{this.findOptions()}</p>
+        <p>Can only use one filter at a time... for now</p>
+        <p>Options to filter by: {this.findOptions().map(thing => thing + ' ')}</p>
         <section className="options">
+          <select onChange={this.filterBy}>
+            <option value="">None</option>
+            {this.findOptions().map(option => {
+              return <option value={option}>{option}</option>
+            })}
+          </select>
+          {console.log(this.state)}
           <select onChange={this.filterOptionsWord}>
             <option value="">All options</option>
             <option value="rhino">Rhino</option>
             <option value="narwhal">Narwhal</option>
             <option value="unicorn">Unicorn</option>
           </select>
-          <select onChange={this.filterOptions}>
+          <select onChange={this.filterOptionsHorn}>
             <option value="">All options</option>
             <option value="1">1 horn</option>
             <option value="2">2 horn</option>
             <option value="3">3 horn</option>
           </select>
         </section>
+
+        <div>Dynamic options:
+          <Options filterOption={this.state.filter}/>
+        </div>
 
         <div>Chosen Images:</div>
         {
