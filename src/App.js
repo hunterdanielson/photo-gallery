@@ -12,8 +12,6 @@ export default class App extends Component {
   findOptions = () => {
     // garb all keys from an object
     const objectKeys = Object.keys(images[0]);
-    
-    console.log(objectKeys);
 
     let optionsUnique = objectKeys.filter(function(item, index){
       return objectKeys.indexOf(item) >= index;
@@ -63,7 +61,6 @@ export default class App extends Component {
               return <option value={option}>{option}</option>
             })}
           </select>
-          {console.log(this.state)}
           <select onChange={this.filterOptionsWord}>
             <option value="">All options</option>
             <option value="rhino">Rhino</option>
@@ -79,6 +76,7 @@ export default class App extends Component {
         </section>
 
         <div>Dynamic options:
+          <select></select>
           <Options filterOption={this.state.filter}/>
         </div>
 
